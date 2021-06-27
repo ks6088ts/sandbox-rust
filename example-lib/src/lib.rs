@@ -1,3 +1,5 @@
+pub mod module_a;
+pub mod module_b;
 #[cfg(test)]
 mod tests {
     #[test]
