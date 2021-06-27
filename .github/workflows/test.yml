@@ -30,7 +30,5 @@ jobs:
         with:
           toolchain: stable
           components: rustfmt, clippy
-      - name: Run CI tests for example-lib
-        run: cd example-lib && make -f ../Makefile ci-test
-      - name: Run CI tests for example-app
-        run: cd example-app && make -f ../Makefile ci-test && make -f ../Makefile run
+      - name: Run CI tests
+        run: make ci-test

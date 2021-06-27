@@ -1,3 +1,5 @@
+PACKAGES ?= example-lib example-app
+
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
 help:
@@ -7,6 +9,12 @@ help:
 .PHONY: format
 format: ## format codes
 	cargo fmt --all
+
+.PHONY: format-all
+format-all: ## format packages
+	@for pkg in $(PACKAGES); do \
+		cd $$pkg && make -f ../Makefile format && cd -; \
+	done
 
 .PHONY: format-check
 format-check: ## check code format
@@ -28,5 +36,11 @@ build: ## build an app
 run: ## run an app
 	cargo run --verbose
 
+.PHONY: ci-test-base
+ci-test-base: format-check lint test build ## ci test base
+
 .PHONY: ci-test
-ci-test: format-check lint test build ## ci test
+ci-test: ## ci test
+	@for pkg in $(PACKAGES); do \
+		cd $$pkg && make -f ../Makefile ci-test-base && cd -; \
+	done

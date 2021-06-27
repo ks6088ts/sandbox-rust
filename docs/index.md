@@ -5,4 +5,8 @@
 ```bash
 cargo new example-app --bin
 cargo new example-lib --lib
+
+# add example-lib dependency to example-app
+cd example-app
+cargo add example-lib --path=../example-lib
 ```
