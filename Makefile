@@ -1,4 +1,6 @@
 PACKAGES ?= example-lib example-app
+TARGETS ?= x86_64-apple-darwin
+OUTPUTS ?= outputs
 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
@@ -44,3 +46,18 @@ ci-test: ## ci test
 	@for pkg in $(PACKAGES); do \
 		cd $$pkg && make -f ../Makefile ci-test-base && cd -; \
 	done
+
+# https://raw.githubusercontent.com/motemen/slack-stream-json/master/.github/workflows/release.yml
+.PHONY: artifact
+artifact: ## generate an artifact
+	cargo build --release --target $(TARGET) --manifest-path=$(PACKAGE)/Cargo.toml
+	mkdir -p $(OUTPUTS)/release/$(PACKAGE)
+	zip --junk-paths $(OUTPUTS)/release/$(PACKAGE)/$(TARGET).zip $(PACKAGE)/target/$(TARGET)/release/$(PACKAGE)
+
+.PHONY: artifacts
+artifacts: ## generate artifacts
+	@for pkg in $(PACKAGES); do \
+		for target in $(TARGETS); do \
+			make artifact PACKAGE=$$pkg TARGET=$$target; \
+		done; \
+	done;
