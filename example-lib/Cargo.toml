@@ -1,0 +1,13 @@
+[package]
+name = "example-lib"
+version = "0.1.0"
+authors = ["ks6088ts <ks6088ts@gmail.com>"]
+edition = "2018"
+
+description = "example-lib"
+repository = "https://github.com/ks6088ts/sandbox-rust"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]

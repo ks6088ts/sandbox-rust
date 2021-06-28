@@ -1,0 +1,34 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    name: Rust ${{ matrix.os }} ${{ matrix.rust }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - nightly
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        # https://github.com/actions/cache/blob/main/examples.md#rust---cargo
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Run CI tests
+        run: make ci-test
