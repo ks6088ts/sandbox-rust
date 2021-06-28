@@ -12,4 +12,7 @@ cargo add example-lib --path=../example-lib
 
 # windows
 rustc --print target-list | grep windows
+
+# login
+cargo login <token>
 ```

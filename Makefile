@@ -38,6 +38,10 @@ build: ## build an app
 run: ## run an app
 	cargo run --verbose
 
+.PHONY: publish
+publish: ## upload a package to the registry
+	cargo publish --verbose --manifest-path=example-lib/Cargo.toml
+
 .PHONY: ci-test-base
 ci-test-base: format-check lint test build ## ci test base
 
